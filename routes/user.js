@@ -6,7 +6,6 @@ const cryptr = new Cryptr(process.env.SECRET_KEY);
 const nodemailer = require("nodemailer");
 const { checkRole } = require("../services/checkRole");
 const { authentificateToken } = require("../services/authentification");
-//const { encrypt, decrypt } = require("../utils/hashPassword");
 const router = express.Router();
 
 router.post("/signup", (req, res) => {
