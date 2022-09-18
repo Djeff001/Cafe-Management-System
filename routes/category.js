@@ -30,7 +30,7 @@ router.patch("/update", authentificateToken, checkRole, (req, res) => {
     async (err, results) => {
       if (err) return res.status(500).json(err);
       if (results.affectedRows == 0)
-        return res.status(400).json("Category id does not exist!");
+        return res.status(400).json({ message: "Category id does not exist!" });
       return res
         .status(200)
         .json({ message: "Category Updated Successfully!" });

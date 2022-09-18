@@ -25,3 +25,15 @@ create table product(
     price integer,
     status varchar(20)
 );
+
+create table bill(
+    id int primary key NOT NULL AUTO_INCREMENT,
+    uuid varchar(200) NOT NULL,
+    name varchar(250) NOT NULL,
+    email varchar(50) NOT NULL,
+    contactNumber varchar(20) NOT NULL,
+    paymentMethod varchar(250) NOT NULL,
+    total int NOT NULL,
+    productDetails JSON DEFAULT NULL,
+    createdBy varchar(255) NOT NULL
+);
