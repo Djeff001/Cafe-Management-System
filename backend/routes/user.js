@@ -13,7 +13,8 @@ router.post("/signup", (req, res) => {
   query = "select * from user where email=?";
   connection.query(query, [user.email], async (err, results) => {
     if (err) return res.status(500).json(err);
-    if (results.length > 0) return res.status(400).json("Email Already Exist!");
+    if (results.length > 0)
+      return res.status(400).json({ message: "Email Already Exist!" });
     //const hash = encrypt(user.password);
     hash = cryptr.encrypt(user.password);
     const query =
@@ -23,7 +24,7 @@ router.post("/signup", (req, res) => {
       [user.name, user.contactNumber, user.email, hash],
       (err, results) => {
         if (err) return res.status(500).json(err);
-        return res.status(200).json("Successfully Registered!");
+        return res.status(200).json({ massage: "Successfully Registered!" });
       }
     );
   });
@@ -38,9 +39,9 @@ router.post("/login", (req, res) => {
       results.length <= 0 ||
       user.password != cryptr.decrypt(results[0].password)
     )
-      return res.status(401).json("Incorrect Username or Password!");
+      return res.status(401).json({message:"Incorrect Username or Password!"});
     if (results[0].status === "false")
-      return res.status(401).json("Wait for Admin Approval!");
+      return res.status(401).json({message:"Wait for Admin Approval!"});
     const response = { email: results[0].email, role: results[0].role };
     const token = jwt.sign(response, process.env.ACCESS_TOKEN, {
       expiresIn: "8h",
@@ -67,7 +68,7 @@ router.post("/forgotPassword", (req, res) => {
   query = "select email, password from user where email=?";
   connection.query(query, [user.email], async (err, results) => {
     if (err) return res.status(500).json(err);
-    if (results.length <= 0) return res.status(401).json("Email Not Found!!");
+    if (results.length <= 0) return res.status(401).json({message:"Email Not Found!!"});
 
     var mailOptions = await transporter.sendMail({
       from: process.env.EMAIL, // sender address
@@ -126,7 +127,7 @@ router.post("/changePassword", authentificateToken, (req, res) => {
         .status(400)
         .json("Something went wrong. Please try again later!");
     if (user.oldPassword != cryptr.decrypt(results[0].password))
-      return res.status(400).json("Incorrect Old Password!");
+      return res.status(400).json({message:"Incorrect Old Password!")};
     query = "update user set password=? where email=?";
     connection.query(
       query,
