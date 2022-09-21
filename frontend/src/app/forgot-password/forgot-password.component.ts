@@ -9,11 +9,11 @@ import { GlobalConstants } from '../shared/global-constants';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.scss'],
 })
-export class LoginComponent implements OnInit {
-  loginForm: any = FormGroup;
+export class ForgotPasswordComponent implements OnInit {
+  forgotPasswordForm: any = FormGroup;
   responseMessage: any;
 
   constructor(
@@ -21,28 +21,26 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private snackbarService: SnackbarService,
-    private dialogRef: MatDialogRef<LoginComponent>,
+    private dialogRef: MatDialogRef<ForgotPasswordComponent>,
     private ngxService: NgxUiLoaderService
   ) {}
 
   ngOnInit(): void {
-    this.loginForm = this.formBuilder.group({
+    this.forgotPasswordForm = this.formBuilder.group({
       email: [
         null,
         [Validators.required, Validators.pattern(GlobalConstants.emailRegex)],
       ],
-      password: [null, [Validators.required]],
     });
   }
 
   handleSubmit() {
     this.ngxService.start();
-    var formData = this.loginForm.value;
+    var formData = this.forgotPasswordForm.value;
     var data = {
       email: formData.email,
-      password: formData.password,
     };
-    this.userService.login(data).subscribe(
+    this.userService.forgotPassword(data).subscribe(
       (response: any) => {
         this.ngxService.stop();
         this.dialogRef.close();
